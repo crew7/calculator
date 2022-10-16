@@ -1,6 +1,6 @@
 .calculator {
-    width: 520px;
-    height: 650px;
+    width: 450px;
+    height: 600px;
     background-color: black;
     
     position: absolute;
@@ -10,7 +10,7 @@
     right: 0;
     margin: auto;
 
-    border: 9px solid grey;
+    border: 13px solid grey;
     border-radius: 10px;
 
     display: grid;
@@ -21,7 +21,6 @@
 }
 
 .calculator div {
-    border: 3px solid white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,6 +30,23 @@
     width: 80%;
     height: 80%;
     border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.displayContainer {
+    grid-column: 1 / 5;
+    background-color: white;
+    border: 10px solid rgb(157, 149, 149)
+}
+
+.displayContainer p {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.clearContainer {
+    grid-column: 1 / 5;
 }
 
 .clearContainer button { /* THIS OVERRIDES NORMAL BUTTON WIDTH/HEIGHT because clear button column takes more columns */
@@ -38,14 +54,10 @@
     height: 70%;   
 }
 
-.displayContainer {
-    grid-column: 1 / 5;
+.equalsContainer {
+    grid-column: 2 / 4;
 }
 
-
-
-.clearContainer {
-    grid-column: 1 / 5;
-    
+.equalsContainer button {
+    width: 90%;
 }
-
