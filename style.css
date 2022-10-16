@@ -1,0 +1,51 @@
+.calculator {
+    width: 520px;
+    height: 650px;
+    background-color: black;
+    
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    border: 9px solid grey;
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 0.8fr 1fr 1fr 1fr 1fr;
+    
+    
+}
+
+.calculator div {
+    border: 3px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator button {
+    width: 80%;
+    height: 80%;
+    border-radius: 10px;
+}
+
+.clearContainer button { /* THIS OVERRIDES NORMAL BUTTON WIDTH/HEIGHT because clear button column takes more columns */
+    width: 95%;
+    height: 70%;   
+}
+
+.displayContainer {
+    grid-column: 1 / 5;
+}
+
+
+
+.clearContainer {
+    grid-column: 1 / 5;
+    
+}
+
