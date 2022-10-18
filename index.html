@@ -5,66 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="calc.js"></script>
+    
 
     <title>Calculator</title>
 </head>
 <body>
     <div class="calculator">
-        <div class="displayContainer">
+        <header class="displayContainer">
             <p>10 + 10 = 20</p>
-        </div>
+        </header>
         <div class="clearContainer"> 
-            <button>AC</button> 
+            <button data-clear="AC">AC</button> 
         </div>
         <div class="sevenContainer"> 
-            <button>7</button> 
+            <button data-number="7">7</button> 
         </div>
         <div class="eightContainer">
-            <button>8</button>
+            <button data-number="8" >8</button>
         </div>
         <div class="nineContainer">
-            <button>9</button>
+            <button data-number="9">9</button>
         </div>
         <div class="divideContainer">
-            <button>/</button>
+            <button data-operator='/'>÷</button>
         </div>
         <div class="fourContainer">
-            <button>4</button>
+            <button data-number="4">4</button>
         </div>
         <div class="fiveContainer">
-            <button>5</button>
+            <button data-number="5">5</button>
         </div>
         <div class="sixContainer">
-            <button>6</button>
+            <button data-number="6">6</button>
         </div>
         <div class="multiplyContainer">
-            <button>x</button>
+            <button data-operator='*'>x</button>
         </div>
         <div class="oneContainer">
-            <button>1</button>
+            <button data-number="1">1</button>
         </div>
         <div class="twoContainer">
-            <button>2</button>
+            <button data-number="2">2</button>
         </div>
         <div class="threeContainer">
-            <button>3</button>
+            <button data-number="3">3</button>
         </div>
         <div class="subtractContainer">
-            <button>-</button>
+            <button data-operator='-'>-</button>
         </div>
         <div class="zeroContainer">
-            <button>0</button>
+            <button data-number="0">0</button>
         </div>
         <div class="equalsContainer">
-            <button>=</button>
+            <button data-equals='='>=</button>
         </div>
         <div class="plusContainer">
-            <button>+</button>
+            <button data-operator='+'>+</button>
         </div>
         
         
 
     </div>
+
+
+
+
+
+    <script src="calc.js"></script>
 </body>
 </html>

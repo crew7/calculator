@@ -1,3 +1,5 @@
+//-------------------------- CALCULATION FUNCTIONS --------------------------//
+
 function add( initialNumber , addedNumber ) {
 	return initialNumber + addedNumber;
 }
@@ -25,3 +27,38 @@ function operate(initialNumber, operator, modifierNumber) {
 		return divide(initialNumber, modifierNumber);
 	}
 }
+
+//-------------------------- CALCULATION FUNCTION END --------------------------//
+
+let allButtons = document.querySelectorAll('button');
+
+
+allButtons.forEach( (individualButton) => {
+	individualButton.addEventListener('click', (clickData) => {
+		clickTarget = clickData.target
+		if (clickTarget.hasAttribute('data-number')) {
+
+			console.log(clickTarget.getAttribute('data-number'));
+
+		} else if (clickTarget.hasAttribute('data-operator')) {
+
+			console.log(clickTarget.getAttribute('data-operator'))
+
+		} else if (clickTarget.hasAttribute('data-operator')) {
+
+			console.log(clickTarget.getAttribute('data-operator'))
+
+		} else if (clickTarget.hasAttribute('data-equals')) {
+
+			console.log(clickTarget.getAttribute('data-equals'))
+
+		} else if (clickTarget.hasAttribute('data-clear')) {
+
+			console.log(clickTarget.getAttribute('data-clear'))
+
+		}
+
+		
+	} )
+} )
+
