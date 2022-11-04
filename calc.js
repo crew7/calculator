@@ -1,4 +1,4 @@
-//-------------------------- CALCULATION FUNCTIONS --------------------------//
+//-------------------------- FUNCTIONS --------------------------//
 
 function add( initialNumber , addedNumber ) {
 	return initialNumber + addedNumber;
@@ -28,33 +28,67 @@ function operate(initialNumber, operator, modifierNumber) {
 	}
 }
 
-//-------------------------- CALCULATION FUNCTION END --------------------------//
+//Seperated these duties due to symbol differences. dataAppender for backend calculations and displayAggregator for frontend visuals.
+function dataAppender(dataNumber) {
+	eachNumber += dataNumber;
+}
 
+function displayAggregator(displayDataPiece) {
+	displayEquation += displayDataPiece;
+	calcDisplay.textContent = displayEquation;
+}
+//===============================================
+
+
+//-------------------------- FUNCTION END --------------------------//
+
+let displayEquation = "" //Displays each side of equation for displyAggregator
+let eachNumber = "" //Stores each side of equation for dataAppender
+
+let snowballData = [] //Array to pass into operate function
+
+
+let calcDisplay = document.querySelector('.displayContainer p')
 let allButtons = document.querySelectorAll('button');
 
 
 allButtons.forEach( (individualButton) => {
 	individualButton.addEventListener('click', (clickData) => {
+
 		clickTarget = clickData.target
+
 		if (clickTarget.hasAttribute('data-number')) {
 
-			console.log(clickTarget.getAttribute('data-number'));
+			calcDataNumber = clickTarget.getAttribute('data-number');
+			calcDisplayNumber = clickTarget.textContent;
+
+			dataAppender(calcDataNumber);
+			displayAggregator(calcDisplayNumber);
+			
 
 		} else if (clickTarget.hasAttribute('data-operator')) {
 
-			console.log(clickTarget.getAttribute('data-operator'))
+			calcDataOperator = clickTarget.getAttribute('data-operator');
+			calcDisplayOperator = clickTarget.textContent;
 
-		} else if (clickTarget.hasAttribute('data-operator')) {
+			dataAppender(calcDataOperator);
+			displayAggregator(calcDisplayOperator);
 
-			console.log(clickTarget.getAttribute('data-operator'))
 
 		} else if (clickTarget.hasAttribute('data-equals')) {
 
-			console.log(clickTarget.getAttribute('data-equals'))
+			calcDataEquals = clickTarget.getAttribute('data-equals');
+			calcDisplayEquals = clickTarget.textContent;
+
+			displayAggregator(calcDisplayEquals);
+
 
 		} else if (clickTarget.hasAttribute('data-clear')) {
 
-			console.log(clickTarget.getAttribute('data-clear'))
+			calcDataClear = clickTarget.getAttribute('data-clear');
+			calcDisplayClear = clickTarget.textContent;
+
+
 
 		}
 
