@@ -28,24 +28,45 @@ function operate(initialNumber, operator, modifierNumber) {
 	}
 }
 
-//Seperated these duties due to symbol differences. dataAppender for backend calculations and displayAggregator for frontend visuals.
-function dataAppender(dataNumber) {
-	eachNumber += dataNumber;
+//Seperated these duties due to symbol differences. DATA for calculations DISPLAY for display.
+function dataAppender(dataPassalong) {
+	eachDataPiece += dataPassalong;
 }
 
-function displayAggregator(displayDataPiece) {
-	displayEquation += displayDataPiece;
-	calcDisplay.textContent = displayEquation;
+//===============================================
+
+function displayAppender(displayPassalong) {
+	if (displayOperatorsArray.includes(displayPassalong)) {
+
+		checkIfOperator = eachDisplayPiece.charAt(eachDisplayPiece.length - 2); //Check if last chosen value is operator
+
+		if (displayOperatorsArray.includes(checkIfOperator)) {
+			eachDisplayPiece = eachDisplayPiece.slice(0,-3) //If last chosen value operator, then remove so new operator replaces it.
+		}
+
+		eachDisplayPiece += ` ${displayPassalong} ` //Add spaces for operators for cleanliness
+		calcDisplay.textContent = eachDisplayPiece;
+		
+	} else { //If not operator, just add without spaces
+
+		eachDisplayPiece += displayPassalong;
+		calcDisplay.textContent = eachDisplayPiece;
+
+	}
 }
+
 //===============================================
 
 
 //-------------------------- FUNCTION END --------------------------//
 
-let displayEquation = "" //Displays each side of equation for displyAggregator
-let eachNumber = "" //Stores each side of equation for dataAppender
+let eachDisplayPiece = "" //Displays each side of equation for displyAggregator
+let eachDataPiece = "" //Stores each side of equation for dataAppender
 
-let snowballData = [] //Array to pass into operate function
+let snowballDisplay = [] //Array to pass each piece of display separately
+let snowballData = [] //Array to pass each piece of data separately
+
+let displayOperatorsArray = ["÷","×","-","+","="]
 
 
 let calcDisplay = document.querySelector('.displayContainer p')
@@ -63,7 +84,7 @@ allButtons.forEach( (individualButton) => {
 			calcDisplayNumber = clickTarget.textContent;
 
 			dataAppender(calcDataNumber);
-			displayAggregator(calcDisplayNumber);
+			displayAppender(calcDisplayNumber);
 			
 
 		} else if (clickTarget.hasAttribute('data-operator')) {
@@ -72,7 +93,7 @@ allButtons.forEach( (individualButton) => {
 			calcDisplayOperator = clickTarget.textContent;
 
 			dataAppender(calcDataOperator);
-			displayAggregator(calcDisplayOperator);
+			displayAppender(calcDisplayOperator);
 
 
 		} else if (clickTarget.hasAttribute('data-equals')) {
@@ -80,7 +101,7 @@ allButtons.forEach( (individualButton) => {
 			calcDataEquals = clickTarget.getAttribute('data-equals');
 			calcDisplayEquals = clickTarget.textContent;
 
-			displayAggregator(calcDisplayEquals);
+			displayAppender(calcDisplayEquals);
 
 
 		} else if (clickTarget.hasAttribute('data-clear')) {
