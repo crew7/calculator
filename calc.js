@@ -17,23 +17,49 @@ function divide( initialNumber, divider ) {
 }
 
 function operate(initialNumber, operator, modifierNumber) {
-	if (operator === '+') {
-		return add(initialNumber, modifierNumber);
-	} else if (operator === '-') {
-		return subtract(initialNumber, modifierNumber);
-	} else if (operator === '*') {
-		return multiply(initialNumber, modifierNumber);
-	} else if (operator === '/') {
-		return divide(initialNumber, modifierNumber);
-	}
+	switch (operator) {
+		case '+':
+			return add(initialNumber, modifierNumber);
+			break;
+		case '-':
+			return subtract(initialNumber, modifierNumber);
+			break;
+		case '*':
+			return multiply(initialNumber, modifierNumber);
+			break;
+		case '/':
+			return divide(initialNumber, modifierNumber);
+			break;
+		case '=':
+			break;
+	};
 }
 
 //Seperated these duties due to symbol differences. DATA for calculations DISPLAY for display.
 function dataAppender(dataPassalong) {
-	eachDataPiece += dataPassalong;
+	if (dataOperatorsArray.includes(dataPassalong)) {
+		snowballingData.push(eachDataPiece); //Push instantly in case calculation array already has two index rotations already
+		eachDataPiece = ""
+		if (snowballingData.length === 1) {
+			snowballingData.push(dataPassalong); //If still on first index rotation, push operator. Wouldn't want otherwise in case array already has 3 indexes.
+		};
+	};
+	if (!dataOperatorsArray.includes(dataPassalong)) {
+		eachDataPiece += dataPassalong; //Just continue creating number operator isnt chosen
+	};
+	if (snowballingData.length === 3 && dataOperatorsArray.includes(dataPassalong)) {
+		let initialNumber = Number(snowballingData[0]); //Convert data from string to integer for healthy operations
+		let operator = snowballingData[1];
+		let modifierNumber = Number(snowballingData[2]);
+
+		snowballedResult = operate(initialNumber, operator, modifierNumber);
+
+		snowballingData = [snowballedResult, dataPassalong] //Take results of operations for next number rotation
+	};
+	console.log(snowballingData);
 }
 
-//===============================================
+//=================================================================================================================
 
 function displayAppender(displayPassalong) {
 	if (displayOperatorsArray.includes(displayPassalong)) {
@@ -55,7 +81,7 @@ function displayAppender(displayPassalong) {
 	}
 }
 
-//===============================================
+//=================================================================================================================
 
 
 //-------------------------- FUNCTION END --------------------------//
@@ -63,10 +89,10 @@ function displayAppender(displayPassalong) {
 let eachDisplayPiece = "" //Displays each side of equation for displyAggregator
 let eachDataPiece = "" //Stores each side of equation for dataAppender
 
-let snowballDisplay = [] //Array to pass each piece of display separately
-let snowballData = [] //Array to pass each piece of data separately
+let snowballingData = [] //Array to pass each piece of data separately
 
 let displayOperatorsArray = ["÷","×","-","+","="]
+let dataOperatorsArray = ["/","*","-","+","="]
 
 
 let calcDisplay = document.querySelector('.displayContainer p')
