@@ -31,17 +31,26 @@ function operate(initialNumber, operator, modifierNumber) {
 			return divide(initialNumber, modifierNumber);
 			break;
 		case '=':
+			console.log(snowballingData);
 			break;
 	};
 }
 
 //Seperated these duties due to symbol differences. DATA for calculations DISPLAY for display.
+
+
 function dataAppender(dataPassalong) {
 	if (dataOperatorsArray.includes(dataPassalong)) {
-		snowballingData.push(eachDataPiece); //Push instantly in case calculation array already has two index rotations already
-		eachDataPiece = ""
+		if (eachDataPiece !== "") {
+			snowballingData.push(eachDataPiece); //Push instantly in case calculation array already has two index rotations already
+			eachDataPiece = ""
+		};
 		if (snowballingData.length === 1) {
 			snowballingData.push(dataPassalong); //If still on first index rotation, push operator. Wouldn't want otherwise in case array already has 3 indexes.
+		};
+		if (snowballingData.length === 2 && eachDataPiece === "" && dataPassalong !== '=') {
+			snowballingData.pop();
+			snowballingData.push(dataPassalong);
 		};
 	};
 	if (!dataOperatorsArray.includes(dataPassalong)) {
@@ -54,7 +63,11 @@ function dataAppender(dataPassalong) {
 
 		snowballedResult = operate(initialNumber, operator, modifierNumber);
 
-		snowballingData = [snowballedResult, dataPassalong] //Take results of operations for next number rotation
+		if (dataPassalong !== '=') {
+			snowballingData = [snowballedResult, dataPassalong] //Take results of operations for next number rotation
+		} else {
+			snowballingData = [snowballedResult]
+		}
 	};
 	console.log(snowballingData);
 }
@@ -66,7 +79,7 @@ function displayAppender(displayPassalong) {
 
 		checkIfOperator = eachDisplayPiece.charAt(eachDisplayPiece.length - 2); //Check if last chosen value is operator
 
-		if (displayOperatorsArray.includes(checkIfOperator)) {
+		if (displayOperatorsArray.includes(checkIfOperator) && checkIfOperator !== '=') {
 			eachDisplayPiece = eachDisplayPiece.slice(0,-3) //If last chosen value operator, then remove so new operator replaces it.
 		}
 
@@ -127,6 +140,7 @@ allButtons.forEach( (individualButton) => {
 			calcDataEquals = clickTarget.getAttribute('data-equals');
 			calcDisplayEquals = clickTarget.textContent;
 
+			dataAppender(calcDataEquals);
 			displayAppender(calcDisplayEquals);
 
 
