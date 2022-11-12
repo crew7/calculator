@@ -40,36 +40,44 @@ function operate(initialNumber, operator, modifierNumber) {
 
 
 function dataAppender(dataPassalong) {
+	if (!dataOperatorsArray.includes(dataPassalong)) {
+		eachDataPiece += dataPassalong; 
+	};
+
 	if (dataOperatorsArray.includes(dataPassalong)) {
 		if (eachDataPiece !== "") {
-			snowballingData.push(eachDataPiece); //Push instantly in case calculation array already has two index rotations already
-			eachDataPiece = ""
+			if (snowballingData.length === 1) { //REPLACE ANSWER
+				snowballingData[0] = Number(eachDataPiece);
+				eachDataPiece = ""
+			} else {
+				snowballingData.push(eachDataPiece); //PUSH NUMBER
+				eachDataPiece = ""
+			};
 		};
-		if (snowballingData.length === 1) {
-			snowballingData.push(dataPassalong); //If still on first index rotation, push operator. Wouldn't want otherwise in case array already has 3 indexes.
+		if (snowballingData.length === 1 && dataPassalong !== '=') {
+			snowballingData.push(dataPassalong); //PUSH OPERATOR
 		};
 		if (snowballingData.length === 2 && eachDataPiece === "" && dataPassalong !== '=') {
 			snowballingData.pop();
-			snowballingData.push(dataPassalong);
+			snowballingData.push(dataPassalong); //REPLACE OPERATOR
 		};
 	};
-	if (!dataOperatorsArray.includes(dataPassalong)) {
-		eachDataPiece += dataPassalong; //Just continue creating number operator isnt chosen
-	};
+
 	if (snowballingData.length === 3 && dataOperatorsArray.includes(dataPassalong)) {
-		let initialNumber = Number(snowballingData[0]); //Convert data from string to integer for healthy operations
+		let initialNumber = Number(snowballingData[0]); 
 		let operator = snowballingData[1];
 		let modifierNumber = Number(snowballingData[2]);
 
 		snowballedResult = operate(initialNumber, operator, modifierNumber);
 
 		if (dataPassalong !== '=') {
-			snowballingData = [snowballedResult, dataPassalong] //Take results of operations for next number rotation
+			snowballingData = [snowballedResult, dataPassalong] 
 		} else {
 			snowballingData = [snowballedResult]
 		}
 	};
 	console.log(snowballingData);
+	console.log(eachDataPiece);
 }
 
 //=================================================================================================================
@@ -77,10 +85,10 @@ function dataAppender(dataPassalong) {
 function displayAppender(displayPassalong) {
 	if (displayOperatorsArray.includes(displayPassalong)) {
 
-		checkIfOperator = eachDisplayPiece.charAt(eachDisplayPiece.length - 2); //Check if last chosen value is operator
+		checkIfOperator = eachDisplayPiece.charAt(eachDisplayPiece.length - 2);
 
 		if (displayOperatorsArray.includes(checkIfOperator) && checkIfOperator !== '=') {
-			eachDisplayPiece = eachDisplayPiece.slice(0,-3) //If last chosen value operator, then remove so new operator replaces it.
+			eachDisplayPiece = eachDisplayPiece.slice(0,-3) //REPLACE OPERATOR
 		}
 
 		eachDisplayPiece += ` ${displayPassalong} ` //Add spaces for operators for cleanliness
@@ -93,6 +101,15 @@ function displayAppender(displayPassalong) {
 
 	}
 }
+
+function dataClear() {
+
+}
+
+function displayClear() {
+
+}
+
 
 //=================================================================================================================
 
@@ -108,7 +125,7 @@ let displayOperatorsArray = ["÷","×","-","+","="]
 let dataOperatorsArray = ["/","*","-","+","="]
 
 
-let calcDisplay = document.querySelector('.displayContainer p')
+let calcDisplay = document.querySelector('.displayContainer .displayBottom')
 let allButtons = document.querySelectorAll('button');
 
 
@@ -145,12 +162,8 @@ allButtons.forEach( (individualButton) => {
 
 
 		} else if (clickTarget.hasAttribute('data-clear')) {
-
-			calcDataClear = clickTarget.getAttribute('data-clear');
-			calcDisplayClear = clickTarget.textContent;
-
-
-
+			dataClear();
+			displayClear();
 		}
 
 		

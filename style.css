@@ -50,6 +50,11 @@
     padding: 0;
 }
 
+.displayBottom .displayBottom {
+    
+}
+
+
 .clearContainer {
     grid-column: 1 / 5;
 }
