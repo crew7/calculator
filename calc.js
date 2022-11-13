@@ -31,7 +31,6 @@ function operate(initialNumber, operator, modifierNumber) {
 			return divide(initialNumber, modifierNumber);
 			break;
 		case '=':
-			console.log(snowballingData);
 			break;
 	};
 }
@@ -68,42 +67,66 @@ function dataAppender(dataPassalong) {
 		let operator = snowballingData[1];
 		let modifierNumber = Number(snowballingData[2]);
 
-		snowballedResult = operate(initialNumber, operator, modifierNumber);
+		snowballedDataResult = operate(initialNumber, operator, modifierNumber);
 
 		if (dataPassalong !== '=') {
-			snowballingData = [snowballedResult, dataPassalong] 
+			snowballingData = [snowballedDataResult, dataPassalong] 
 		} else {
-			snowballingData = [snowballedResult]
+			snowballingData = [snowballedDataResult]
 		}
 	};
-	console.log(snowballingData);
-	console.log(eachDataPiece);
+
+	if (snowballedDataResult) {
+		displayAnswer = snowballedDataResult;	
+	} else if (snowballingData[0]) {
+		displayAnswer = snowballingData[0]
+	} else {
+		displayAnswer = ""
+	}
+		
 }
 
 //=================================================================================================================
 
 function displayAppender(displayPassalong) {
+
+	latestDisplayIndex = snowballingDisplay.length - 1
+
+	checkForEqualsWipe = snowballingDisplay[snowballingDisplay.length - 2]
+
+	
+	if (checkForEqualsWipe === '=') {
+		snowballingDisplay = [snowballingDisplay[latestDisplayIndex]];
+	};
+
 	if (displayOperatorsArray.includes(displayPassalong)) {
-
-		checkIfOperator = eachDisplayPiece.charAt(eachDisplayPiece.length - 2);
-
-		if (displayOperatorsArray.includes(checkIfOperator) && checkIfOperator !== '=') {
-			eachDisplayPiece = eachDisplayPiece.slice(0,-3) //REPLACE OPERATOR
-		}
-
-		eachDisplayPiece += ` ${displayPassalong} ` //Add spaces for operators for cleanliness
-		calcDisplay.textContent = eachDisplayPiece;
+		snowballingDisplay.push(displayPassalong);
 		
-	} else { //If not operator, just add without spaces
+		if (displayPassalong === '=') {
+			snowballingDisplay.push(displayAnswer.toString());
+		};
+	};
 
-		eachDisplayPiece += displayPassalong;
-		calcDisplay.textContent = eachDisplayPiece;
-
+	if (!displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG NUMBER
+		if (!snowballingDisplay[latestDisplayIndex]) { //IF NO/FALSE LATEST INDEX
+			snowballingDisplay.push(displayPassalong);
+		}
+		if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER
+			snowballingDisplay[latestDisplayIndex] += displayPassalong
+		} else {
+			snowballingDisplay.push(displayPassalong);
+		}
 	}
+
+	console.log(snowballingDisplay);
+	overwriteDisplay = snowballingDisplay.join(" ");
+	calcDisplay.textContent = overwriteDisplay;
+
+
 }
 
 function dataClear() {
-
+	
 }
 
 function displayClear() {
@@ -116,13 +139,28 @@ function displayClear() {
 
 //-------------------------- FUNCTION END --------------------------//
 
+//----Display variables
 let eachDisplayPiece = "" //Displays each side of equation for displyAggregator
+
+let snowballingDisplay = []
+
+let checkForEqualsWipe = ""
+let latestDisplayIndex = ""
+
+let displayAnswer = ""
+
+let displayOperatorsArray = ["÷","×","-","+","="]
+
+//----Data variables
 let eachDataPiece = "" //Stores each side of equation for dataAppender
 
 let snowballingData = [] //Array to pass each piece of data separately
 
-let displayOperatorsArray = ["÷","×","-","+","="]
 let dataOperatorsArray = ["/","*","-","+","="]
+let snowballedDataResult = "" //Declare for check if true statements
+
+
+
 
 
 let calcDisplay = document.querySelector('.displayContainer .displayBottom')
