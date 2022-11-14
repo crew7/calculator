@@ -39,11 +39,11 @@ function operate(initialNumber, operator, modifierNumber) {
 
 
 function dataAppender(dataPassalong) {
-	if (!dataOperatorsArray.includes(dataPassalong)) {
+	if (!dataOperatorsArray.includes(dataPassalong)) { //IF NUMBER
 		eachDataPiece += dataPassalong; 
 	};
 
-	if (dataOperatorsArray.includes(dataPassalong)) {
+	if (dataOperatorsArray.includes(dataPassalong)) { //IF OPERATOR
 		if (eachDataPiece !== "") {
 			if (snowballingData.length === 1) { //REPLACE ANSWER
 				snowballingData[0] = Number(eachDataPiece);
@@ -62,7 +62,7 @@ function dataAppender(dataPassalong) {
 		};
 	};
 
-	if (snowballingData.length === 3 && dataOperatorsArray.includes(dataPassalong)) {
+	if (snowballingData.length === 3 && dataOperatorsArray.includes(dataPassalong)) { //3 INDEXES AND OPERATOR
 		let initialNumber = Number(snowballingData[0]); 
 		let operator = snowballingData[1];
 		let modifierNumber = Number(snowballingData[2]);
@@ -90,25 +90,32 @@ function dataAppender(dataPassalong) {
 
 function displayAppender(displayPassalong) {
 
+	calcDisplayTop.textContent = "" 
+
 	latestDisplayIndex = snowballingDisplay.length - 1
 
-	checkForEqualsWipe = snowballingDisplay[snowballingDisplay.length - 2]
-
+	expressionDisplay = snowballingDisplay;	
 	
-	if (checkForEqualsWipe === '=') {
-		snowballingDisplay = [snowballingDisplay[latestDisplayIndex]];
-	};
-
-	if (displayOperatorsArray.includes(displayPassalong)) {
+	if (displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG OPERATOR
 		snowballingDisplay.push(displayPassalong);
 		
 		if (displayPassalong === '=') {
 			snowballingDisplay.push(displayAnswer.toString());
+
+			latestDisplayIndex = snowballingDisplay.length - 1
+
+			expressionDisplay = snowballingDisplay.slice();
+			expressionDisplay.pop();
+
+
+			console.log(expressionDisplay)
+
+			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]];
 		};
 	};
 
 	if (!displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG NUMBER
-		if (!snowballingDisplay[latestDisplayIndex]) { //IF NO/FALSE LATEST INDEX
+		if (!snowballingDisplay[latestDisplayIndex]) { //IF THERE ISNT LATEST INDEX
 			snowballingDisplay.push(displayPassalong);
 		}
 		if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER
@@ -118,15 +125,22 @@ function displayAppender(displayPassalong) {
 		}
 	}
 
-	console.log(snowballingDisplay);
+
 	overwriteDisplay = snowballingDisplay.join(" ");
-	calcDisplay.textContent = overwriteDisplay;
+	calcDisplayBottom.textContent = overwriteDisplay;
+
+	if (expressionDisplay[latestDisplayIndex - 1] === "=") { //Since expression is popped, latest is actually -1
+		expressionDisplay = expressionDisplay.join(" ");
+	
+		calcDisplayTop.textContent = expressionDisplay;
+	}
+	
 
 
 }
 
 function dataClear() {
-	
+
 }
 
 function displayClear() {
@@ -141,14 +155,10 @@ function displayClear() {
 
 //----Display variables
 let eachDisplayPiece = "" //Displays each side of equation for displyAggregator
-
 let snowballingDisplay = []
-
-let checkForEqualsWipe = ""
 let latestDisplayIndex = ""
-
 let displayAnswer = ""
-
+let expressionDisplay = []
 let displayOperatorsArray = ["÷","×","-","+","="]
 
 //----Data variables
@@ -163,7 +173,8 @@ let snowballedDataResult = "" //Declare for check if true statements
 
 
 
-let calcDisplay = document.querySelector('.displayContainer .displayBottom')
+let calcDisplayTop = document.querySelector('.displayContainer .displayTop')
+let calcDisplayBottom = document.querySelector('.displayContainer .displayBottom')
 let allButtons = document.querySelectorAll('button');
 
 
