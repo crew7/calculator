@@ -77,11 +77,7 @@ function dataAppender(dataPassalong) {
 	};
 
 	if (snowballedDataResult) {
-		displayAnswer = snowballedDataResult;	
-	} else if (snowballingData[0]) {
-		displayAnswer = snowballingData[0]
-	} else {
-		displayAnswer = ""
+		displayAnswer = snowballedDataResult.toString();	
 	}
 		
 }
@@ -95,9 +91,13 @@ function displayAppender(displayPassalong) {
 	latestDisplayIndex = snowballingDisplay.length - 1
 
 	expressionDisplay = snowballingDisplay;	
+
+	if (displayOperatorsArray.includes(displayPassalong) && displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) {
+		snowballingDisplay.pop();
+	}
 	
 	if (displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG OPERATOR
-		snowballingDisplay.push(displayPassalong);
+		snowballingDisplay.push(displayPassalong); //PUSH OPERATOR
 		
 		if (displayPassalong === '=') {
 			snowballingDisplay.push(displayAnswer.toString());
@@ -107,18 +107,20 @@ function displayAppender(displayPassalong) {
 			expressionDisplay = snowballingDisplay.slice();
 			expressionDisplay.pop();
 
-
-			console.log(expressionDisplay)
-
 			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]];
+
 		};
 	};
 
 	if (!displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG NUMBER
+
+		if (displayAnswer === calcDisplayBottom.textContent) { //REPLACE ANSWER
+			snowballingDisplay = []
+		}
+
 		if (!snowballingDisplay[latestDisplayIndex]) { //IF THERE ISNT LATEST INDEX
 			snowballingDisplay.push(displayPassalong);
-		}
-		if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER
+		} else if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER
 			snowballingDisplay[latestDisplayIndex] += displayPassalong
 		} else {
 			snowballingDisplay.push(displayPassalong);
@@ -129,10 +131,11 @@ function displayAppender(displayPassalong) {
 	overwriteDisplay = snowballingDisplay.join(" ");
 	calcDisplayBottom.textContent = overwriteDisplay;
 
+	//TEMP TOP DISPLAY
 	if (expressionDisplay[latestDisplayIndex - 1] === "=") { //Since expression is popped, latest is actually -1
 		expressionDisplay = expressionDisplay.join(" ");
-	
 		calcDisplayTop.textContent = expressionDisplay;
+
 	}
 	
 
