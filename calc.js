@@ -86,28 +86,34 @@ function dataAppender(dataPassalong) {
 
 function displayAppender(displayPassalong) {
 
-	calcDisplayTop.textContent = "" 
+	calcDisplayTop.textContent = "" //RESET RESULT PAGE
 
 	latestDisplayIndex = snowballingDisplay.length - 1
 
 	expressionDisplay = snowballingDisplay;	
 
 	if (displayOperatorsArray.includes(displayPassalong) && displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) {
-		snowballingDisplay.pop();
+		snowballingDisplay.pop(); //IF LAST PASSALONG OPERATOR, REMOVE LAST OPERATOR
 	}
 	
 	if (displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG OPERATOR
 		snowballingDisplay.push(displayPassalong); //PUSH OPERATOR
 		
-		if (displayPassalong === '=') {
-			snowballingDisplay.push(displayAnswer.toString());
+		if (displayPassalong === '=') { 
+			if (snowballingDisplay.length === 1) {
+				return;
+			} else if (snowballingDisplay.length === 2) {
+				displayAnswer = snowballingDisplay[0];
+			}
+			
 
-			latestDisplayIndex = snowballingDisplay.length - 1
+			snowballingDisplay.push(displayAnswer.toString());
 
 			expressionDisplay = snowballingDisplay.slice();
 			expressionDisplay.pop();
 
-			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]];
+			latestDisplayIndex = snowballingDisplay.length - 1 //REWRITE
+			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]]; //RESET DISPLAY SINCE '='
 
 		};
 	};
