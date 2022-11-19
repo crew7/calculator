@@ -90,21 +90,25 @@ function displayAppender(displayPassalong) {
 	calcDisplayTop.textContent = "" //RESET EXPRESSION PAGE
 
 	latestDisplayIndex = snowballingDisplay.length - 1
-
-
 	if (displayOperatorsArray.includes(displayPassalong) && displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) {
 		snowballingDisplay.pop(); //IF LAST PASSALONG OPERATOR, REMOVE LAST OPERATOR
 	}
 	
 	if (displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG OPERATOR
+
 		snowballingDisplay.push(displayPassalong); //PUSH OPERATOR
 		
 		if (displayPassalong === '=') { 
-			if (snowballingDisplay.length === 1) {
-				return;
-			} else if (snowballingDisplay.length === 2) {
-				displayAnswer = snowballingDisplay[0];
+
+			if (snowballingDisplay.length === 2) displayAnswer = snowballingDisplay[0];
+			
+			if (snowballingDisplay.length === 3 && displayOperatorsArray.includes(snowballingDisplay[0]) && displayOperatorsArray.includes(snowballingDisplay[2])) {
+				displayAnswer = snowballingDisplay[1]; //IF INDEX 0 AND 2 OPERATOR, INDEX 1 ANS
+				snowballingDisplay.shift();
+			} else if (displayOperatorsArray.includes(snowballingDisplay[0])) {
+				snowballingDisplay.shift(); //IF START WITH OPERATOR, IGNORE IT
 			}
+					
 			console.log(snowballingDisplay)
 			
 
@@ -134,6 +138,9 @@ function displayAppender(displayPassalong) {
 			snowballingDisplay.push(displayPassalong);
 		}
 	}
+
+
+
 
 
 	overwriteDisplay = snowballingDisplay.join(" ");
