@@ -76,21 +76,21 @@ function dataAppender(dataPassalong) {
 		}
 	};
 
-	if (snowballedDataResult) {
+	if (snowballedDataResult || snowballedDataResult === 0) {
 		displayAnswer = snowballedDataResult.toString();	
 	}
 		
+	console.log(snowballedDataResult);
 }
 
 //=================================================================================================================
 
 function displayAppender(displayPassalong) {
 
-	calcDisplayTop.textContent = "" //RESET RESULT PAGE
+	calcDisplayTop.textContent = "" //RESET EXPRESSION PAGE
 
 	latestDisplayIndex = snowballingDisplay.length - 1
 
-	expressionDisplay = snowballingDisplay;	
 
 	if (displayOperatorsArray.includes(displayPassalong) && displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) {
 		snowballingDisplay.pop(); //IF LAST PASSALONG OPERATOR, REMOVE LAST OPERATOR
@@ -105,16 +105,18 @@ function displayAppender(displayPassalong) {
 			} else if (snowballingDisplay.length === 2) {
 				displayAnswer = snowballingDisplay[0];
 			}
+			console.log(snowballingDisplay)
 			
 
 			snowballingDisplay.push(displayAnswer.toString());
 
+			
 			expressionDisplay = snowballingDisplay.slice();
-			expressionDisplay.pop();
+			expressionDisplay.pop(); //REMOVE ANS FOR EXPRESSION
 
 			latestDisplayIndex = snowballingDisplay.length - 1 //REWRITE
-			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]]; //RESET DISPLAY SINCE '='
-
+			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]]; //REMOVE ALL BUT ANS FOR RESULT
+			
 		};
 	};
 
@@ -124,7 +126,7 @@ function displayAppender(displayPassalong) {
 			snowballingDisplay = []
 		}
 
-		if (!snowballingDisplay[latestDisplayIndex]) { //IF THERE ISNT LATEST INDEX
+		if (!snowballingDisplay[latestDisplayIndex]) { //IF EMPTY ARRAY
 			snowballingDisplay.push(displayPassalong);
 		} else if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER
 			snowballingDisplay[latestDisplayIndex] += displayPassalong
