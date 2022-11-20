@@ -80,7 +80,6 @@ function dataAppender(dataPassalong) {
 		displayAnswer = snowballedDataResult.toString();	
 	}
 		
-	console.log(snowballedDataResult);
 }
 
 //=================================================================================================================
@@ -100,7 +99,8 @@ function displayAppender(displayPassalong) {
 		
 		if (displayPassalong === '=') { 
 
-			if (snowballingDisplay.length === 2) displayAnswer = snowballingDisplay[0];
+
+			if (snowballingDisplay.length === 2) displayAnswer = snowballingDisplay[0]; //IF NUM THEN OPERATOR, SINCE OPERATORS REPLACE
 			
 			if (snowballingDisplay.length === 3 && displayOperatorsArray.includes(snowballingDisplay[0]) && displayOperatorsArray.includes(snowballingDisplay[2])) {
 				displayAnswer = snowballingDisplay[1]; //IF INDEX 0 AND 2 OPERATOR, INDEX 1 ANS
@@ -108,13 +108,13 @@ function displayAppender(displayPassalong) {
 			} else if (displayOperatorsArray.includes(snowballingDisplay[0])) {
 				snowballingDisplay.shift(); //IF START WITH OPERATOR, IGNORE IT
 			}
-					
-			console.log(snowballingDisplay)
-			
-
-			snowballingDisplay.push(displayAnswer.toString());
 
 			
+			if (displayAnswer) snowballingDisplay.push(displayAnswer.toString());
+			snowballingDisplay = snowballingDisplay.filter(n => n) //ABOVE PUSH GIVES UNDEFINED, FILTER REMOVES.
+			if (snowballingDisplay.length === 1) snowballingDisplay.pop(); //ABOVE FILTER BYPASSES ABOVE IF STATEMENTS, SO LEN 1 CHECK HERE.	
+			
+
 			expressionDisplay = snowballingDisplay.slice();
 			expressionDisplay.pop(); //REMOVE ANS FOR EXPRESSION
 
@@ -145,6 +145,8 @@ function displayAppender(displayPassalong) {
 
 	overwriteDisplay = snowballingDisplay.join(" ");
 	calcDisplayBottom.textContent = overwriteDisplay;
+	
+	
 
 	//TEMP TOP DISPLAY
 	if (expressionDisplay[latestDisplayIndex - 1] === "=") { //Since expression is popped, latest is actually -1
