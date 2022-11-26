@@ -39,47 +39,72 @@ function operate(initialNumber, operator, modifierNumber) {
 
 
 function dataAppender(dataPassalong) {
+
+	if (dataOperatorsArray.includes(dataPassalong) && snowballingData.length === 0) {
+		snowballingData.unshift(0); //if start with operator, then 0 then operator.
+	} 
+
+	
+
 	if (!dataOperatorsArray.includes(dataPassalong)) { //IF NUMBER
 		eachDataPiece += dataPassalong; 
 	};
 
+	
 	if (dataOperatorsArray.includes(dataPassalong)) { //IF OPERATOR
+		
+		
 		if (eachDataPiece !== "") {
 			if (snowballingData.length === 1) { //REPLACE ANSWER
 				snowballingData[0] = Number(eachDataPiece);
 				eachDataPiece = ""
 			} else {
-				snowballingData.push(eachDataPiece); //PUSH NUMBER
+				snowballingData.push(Number(eachDataPiece)); //PUSH NUMBER
 				eachDataPiece = ""
 			};
 		};
 		if (snowballingData.length === 1 && dataPassalong !== '=') {
 			snowballingData.push(dataPassalong); //PUSH OPERATOR
+
+		
 		};
 		if (snowballingData.length === 2 && eachDataPiece === "" && dataPassalong !== '=') {
 			snowballingData.pop();
 			snowballingData.push(dataPassalong); //REPLACE OPERATOR
 		};
+		if (dataPassalong === '=' && snowballingData[0] === 0 && dataOperatorsArray.includes(snowballingData[1]) && snowballingData.length <= 2) {
+			snowballingData.push(0); //PREVENTS BUGS WHERE STARTING WITH OPERATOR AND CLICKING '='
+		}
 	};
+
+	
+	
 
 	if (snowballingData.length === 3 && dataOperatorsArray.includes(dataPassalong)) { //3 INDEXES AND OPERATOR
 		let initialNumber = Number(snowballingData[0]); 
 		let operator = snowballingData[1];
 		let modifierNumber = Number(snowballingData[2]);
 
+
 		snowballedDataResult = operate(initialNumber, operator, modifierNumber);
+
+		console.log(snowballedDataResult);
+	
 
 		if (dataPassalong !== '=') {
 			snowballingData = [snowballedDataResult, dataPassalong] 
 		} else {
 			snowballingData = [snowballedDataResult]
 		}
-	};
-
-	if (snowballedDataResult || snowballedDataResult === 0) {
-		displayAnswer = snowballedDataResult.toString();	
 	}
-		
+
+	if (snowballedDataResult) {
+		displayAnswer = snowballedDataResult.toString();
+	} else {
+		displayAnswer = snowballingData[0]
+	}
+
+
 }
 
 //=================================================================================================================
@@ -96,21 +121,19 @@ function displayAppender(displayPassalong) {
 	if (displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG OPERATOR
 
 		snowballingDisplay.push(displayPassalong); //PUSH OPERATOR
+
+		if (snowballingDisplay.length === 1 && displayOperatorsArray.includes(snowballingDisplay[0]) && snowballingDisplay[0] !== '=') {
+			snowballingDisplay.unshift("0") //IF START OPERATOR, UNSHIFT 0
+		}
 		
 		if (displayPassalong === '=') { 
 
-
-			if (snowballingDisplay.length === 2) displayAnswer = snowballingDisplay[0]; //IF NUM THEN OPERATOR, SINCE OPERATORS REPLACE
+			if (snowballingDisplay.length === 2) { //IF NUM OPERATOR	
+				displayAnswer = snowballingDisplay[0]
+			} 
 			
-			if (snowballingDisplay.length === 3 && displayOperatorsArray.includes(snowballingDisplay[0]) && displayOperatorsArray.includes(snowballingDisplay[2])) {
-				displayAnswer = snowballingDisplay[1]; //IF INDEX 0 AND 2 OPERATOR, INDEX 1 ANS
-				snowballingDisplay.shift();
-			} else if (displayOperatorsArray.includes(snowballingDisplay[0])) {
-				snowballingDisplay.shift(); //IF START WITH OPERATOR, IGNORE IT
-			}
 
-			
-			if (displayAnswer) snowballingDisplay.push(displayAnswer.toString());
+			snowballingDisplay.push(displayAnswer.toString()); 
 			snowballingDisplay = snowballingDisplay.filter(n => n) //ABOVE PUSH GIVES UNDEFINED, FILTER REMOVES.
 			if (snowballingDisplay.length === 1) snowballingDisplay.pop(); //ABOVE FILTER BYPASSES ABOVE IF STATEMENTS, SO LEN 1 CHECK HERE.	
 			
@@ -122,13 +145,19 @@ function displayAppender(displayPassalong) {
 			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]]; //REMOVE ALL BUT ANS FOR RESULT
 			
 		};
+
+
 	};
 
 	if (!displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG NUMBER
 
-		if (displayAnswer === calcDisplayBottom.textContent) { //REPLACE ANSWER
-			snowballingDisplay = []
+
+		if (displayAnswer.toString() === calcDisplayBottom.textContent) { //REPLACE ANSWER
+			snowballingDisplay = [] 
+			calcDisplayBottom.textContent = ""
 		}
+
+		
 
 		if (!snowballingDisplay[latestDisplayIndex]) { //IF EMPTY ARRAY
 			snowballingDisplay.push(displayPassalong);
@@ -138,10 +167,6 @@ function displayAppender(displayPassalong) {
 			snowballingDisplay.push(displayPassalong);
 		}
 	}
-
-
-
-
 
 	overwriteDisplay = snowballingDisplay.join(" ");
 	calcDisplayBottom.textContent = overwriteDisplay;
@@ -177,7 +202,7 @@ function displayClear() {
 let eachDisplayPiece = "" //Displays each side of equation for displyAggregator
 let snowballingDisplay = []
 let latestDisplayIndex = ""
-let displayAnswer = ""
+let displayAnswer = 0
 let expressionDisplay = []
 let displayOperatorsArray = ["÷","×","-","+","="]
 
