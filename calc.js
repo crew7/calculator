@@ -100,8 +100,10 @@ function dataAppender(dataPassalong) {
 
 	if (snowballedDataResult) {
 		displayAnswer = snowballedDataResult.toString();
-	} else {
+	} else if (snowballingData[0]) {
 		displayAnswer = snowballingData[0]
+	} else {
+		displayAnswer = 0
 	}
 
 
@@ -128,10 +130,6 @@ function displayAppender(displayPassalong) {
 		
 		if (displayPassalong === '=') { 
 
-			if (snowballingDisplay.length === 2) { //IF NUM OPERATOR	
-				displayAnswer = snowballingDisplay[0]
-			} 
-			
 
 			snowballingDisplay.push(displayAnswer.toString()); 
 			snowballingDisplay = snowballingDisplay.filter(n => n) //ABOVE PUSH GIVES UNDEFINED, FILTER REMOVES.
