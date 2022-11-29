@@ -87,8 +87,6 @@ function dataAppender(dataPassalong) {
 
 
 		snowballedDataResult = operate(initialNumber, operator, modifierNumber);
-
-		console.log(snowballedDataResult);
 	
 
 		if (dataPassalong !== '=') {
@@ -96,15 +94,28 @@ function dataAppender(dataPassalong) {
 		} else {
 			snowballingData = [snowballedDataResult]
 		}
+
 	}
 
-	if (snowballedDataResult) {
+	console.log(displayAnswer)
+	console.log(snowballingData)
+
+	if (isNaN(snowballedDataResult)) { //For 0 / 0
+		snowballedDataResult = 0
+		displayAnswer = 0
+		snowballingData = [0]
+	} else if  (snowballingData.length === 1) {
+		displayAnswer = snowballingData[0]
+	} else if (snowballingData.length === 2) {
+		displayAnswer = snowballingData[0]
+	} else if (snowballedDataResult) {
 		displayAnswer = snowballedDataResult.toString();
 	} else if (snowballingData[0]) {
 		displayAnswer = snowballingData[0]
 	} else {
 		displayAnswer = 0
 	}
+
 
 
 }
@@ -148,7 +159,6 @@ function displayAppender(displayPassalong) {
 	};
 
 	if (!displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG NUMBER
-
 
 		if (displayAnswer.toString() === calcDisplayBottom.textContent) { //REPLACE ANSWER
 			snowballingDisplay = [] 
