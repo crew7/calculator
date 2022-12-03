@@ -40,6 +40,8 @@ function operate(initialNumber, operator, modifierNumber) {
 
 function dataAppender(dataPassalong) {
 
+	
+
 	if (dataOperatorsArray.includes(dataPassalong) && snowballingData.length === 0) {
 		snowballingData.unshift(0); //if start with operator, then 0 then operator.
 	} 
@@ -50,31 +52,40 @@ function dataAppender(dataPassalong) {
 		eachDataPiece += dataPassalong; 
 	};
 
-	
+
 	if (dataOperatorsArray.includes(dataPassalong)) { //IF OPERATOR
 		
 		
-		if (eachDataPiece !== "") {
-			if (snowballingData.length === 1) { //REPLACE ANSWER
+		if (eachDataPiece !== "") { //IF STORED NUMBER
+
+			console.log(snowballingData)
+			console.log(displayAnswer)
+
+			if (snowballingData.length === 1) { //REPLACE ANSWER (e.g. 5 > =) 
 				snowballingData[0] = Number(eachDataPiece);
 				eachDataPiece = ""
-			} else {
+				 
+			} else { 
 				snowballingData.push(Number(eachDataPiece)); //PUSH NUMBER
 				eachDataPiece = ""
 			};
 		};
+		
 		if (snowballingData.length === 1 && dataPassalong !== '=') {
 			snowballingData.push(dataPassalong); //PUSH OPERATOR
 
 		
 		};
+		
 		if (snowballingData.length === 2 && eachDataPiece === "" && dataPassalong !== '=') {
 			snowballingData.pop();
 			snowballingData.push(dataPassalong); //REPLACE OPERATOR
 		};
+		
 		if (dataPassalong === '=' && snowballingData[0] === 0 && dataOperatorsArray.includes(snowballingData[1]) && snowballingData.length <= 2) {
 			snowballingData.push(0); //PREVENTS BUGS WHERE STARTING WITH OPERATOR AND CLICKING '='
 		}
+		
 	};
 
 	
@@ -85,7 +96,7 @@ function dataAppender(dataPassalong) {
 		let operator = snowballingData[1];
 		let modifierNumber = Number(snowballingData[2]);
 
-
+		
 		snowballedDataResult = operate(initialNumber, operator, modifierNumber);
 	
 
@@ -97,10 +108,9 @@ function dataAppender(dataPassalong) {
 
 	}
 
-	console.log(displayAnswer)
-	console.log(snowballingData)
+	
 
-	if (isNaN(snowballedDataResult)) { //For 0 / 0
+	if ( !Number.isInteger((snowballedDataResult)) ) {
 		snowballedDataResult = 0
 		displayAnswer = 0
 		snowballingData = [0]
@@ -135,7 +145,7 @@ function displayAppender(displayPassalong) {
 
 		snowballingDisplay.push(displayPassalong); //PUSH OPERATOR
 
-		if (snowballingDisplay.length === 1 && displayOperatorsArray.includes(snowballingDisplay[0]) && snowballingDisplay[0] !== '=') {
+		if (snowballingDisplay.length === 1 && displayOperatorsArray.includes(snowballingDisplay[0]) ) {
 			snowballingDisplay.unshift("0") //IF START OPERATOR, UNSHIFT 0
 		}
 		
@@ -193,11 +203,20 @@ function displayAppender(displayPassalong) {
 }
 
 function dataClear() {
-
+	eachDataPiece = ""
+	snowballingData = []
+	snowballedDataResult = ""
+	
 }
 
 function displayClear() {
-
+	eachDisplayPiece = "" //Displays each side of equation for displyAggregator
+	snowballingDisplay = []
+	latestDisplayIndex = ""
+	displayAnswer = 0
+	expressionDisplay = []
+	calcDisplayBottom.textContent = ""
+	calcDisplayTop.textContent = ""
 }
 
 
