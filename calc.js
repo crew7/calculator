@@ -115,7 +115,8 @@ function dataAppender(dataPassalong) {
 	}
 
 
-	if ( !Number.isInteger((snowballedDataResult)) && snowballedDataResult !== "" ) { //Not string for operator > num > =
+	//NOT INT, FLOAT, OR EMPTY STRING, RESET.
+	if ( !isFinite(snowballedDataResult) || isNaN(snowballedDataResult) ) { //num > / > 0 gives infinity, / > = gives NaN
 		snowballedDataResult = 0
 		displayAnswer = 0
 		snowballingData = [0]
@@ -286,6 +287,14 @@ allButtons.forEach( (individualButton) => {
 			dataAppender(calcDataEquals);
 			displayAppender(calcDisplayEquals);
 
+
+		} else if (clickTarget.hasAttribute('data-dot')) {
+
+			calcDataDot = clickTarget.getAttribute('data-dot')
+			calcDisplayDot = clickTarget.textContent;
+
+			dataAppender(calcDataDot);
+			displayAppender(calcDataDot);
 
 		} else if (clickTarget.hasAttribute('data-clear')) {
 			dataClear();

@@ -93,9 +93,7 @@
     height: 70%;   
 }
 
-.equalsContainer {
-    grid-column: 2 / 4;
-}
+
 
 .equalsContainer button {
     width: 90%;
