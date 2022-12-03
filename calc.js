@@ -52,39 +52,45 @@ function dataAppender(dataPassalong) {
 		eachDataPiece += dataPassalong; 
 	};
 
+	
 
 	if (dataOperatorsArray.includes(dataPassalong)) { //IF OPERATOR
 		
 		
+		
 		if (eachDataPiece !== "") { //IF STORED NUMBER
 
-			console.log(snowballingData)
-			console.log(displayAnswer)
+			
 
 			if (snowballingData.length === 1) { //REPLACE ANSWER (e.g. 5 > =) 
 				snowballingData[0] = Number(eachDataPiece);
 				eachDataPiece = ""
+				
 				 
 			} else { 
 				snowballingData.push(Number(eachDataPiece)); //PUSH NUMBER
 				eachDataPiece = ""
 			};
 		};
-		
+
 		if (snowballingData.length === 1 && dataPassalong !== '=') {
 			snowballingData.push(dataPassalong); //PUSH OPERATOR
 
 		
 		};
 		
+
 		if (snowballingData.length === 2 && eachDataPiece === "" && dataPassalong !== '=') {
 			snowballingData.pop();
 			snowballingData.push(dataPassalong); //REPLACE OPERATOR
 		};
 		
+		
+
 		if (dataPassalong === '=' && snowballingData[0] === 0 && dataOperatorsArray.includes(snowballingData[1]) && snowballingData.length <= 2) {
 			snowballingData.push(0); //PREVENTS BUGS WHERE STARTING WITH OPERATOR AND CLICKING '='
 		}
+		
 		
 	};
 
@@ -108,9 +114,8 @@ function dataAppender(dataPassalong) {
 
 	}
 
-	
 
-	if ( !Number.isInteger((snowballedDataResult)) ) {
+	if ( !Number.isInteger((snowballedDataResult)) && snowballedDataResult !== "" ) { //Not string for operator > num > =
 		snowballedDataResult = 0
 		displayAnswer = 0
 		snowballingData = [0]
@@ -126,7 +131,7 @@ function dataAppender(dataPassalong) {
 		displayAnswer = 0
 	}
 
-
+	
 
 }
 
