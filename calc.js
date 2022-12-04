@@ -40,32 +40,26 @@ function operate(initialNumber, operator, modifierNumber) {
 
 function dataAppender(dataPassalong) {
 
-	
-
 	if (dataOperatorsArray.includes(dataPassalong) && snowballingData.length === 0) {
 		snowballingData.unshift(0); //if start with operator, then 0 then operator.
-	} 
+	}
 
-	
 
 	if (!dataOperatorsArray.includes(dataPassalong)) { //IF NUMBER
-		eachDataPiece += dataPassalong; 
+		if (eachDataPiece.indexOf(".") === -1 || dataPassalong !== ".") { //PREVENTS DOUBLE FLOAT
+			eachDataPiece += dataPassalong;
+		}
 	};
 
-	
+	console.log(eachDataPiece)
 
 	if (dataOperatorsArray.includes(dataPassalong)) { //IF OPERATOR
 		
-		
-		
 		if (eachDataPiece !== "") { //IF STORED NUMBER
-
-			
 
 			if (snowballingData.length === 1) { //REPLACE ANSWER (e.g. 5 > =) 
 				snowballingData[0] = Number(eachDataPiece);
-				eachDataPiece = ""
-				
+				eachDataPiece = ""	
 				 
 			} else { 
 				snowballingData.push(Number(eachDataPiece)); //PUSH NUMBER
@@ -185,10 +179,22 @@ function displayAppender(displayPassalong) {
 
 		if (!snowballingDisplay[latestDisplayIndex]) { //IF EMPTY ARRAY
 			snowballingDisplay.push(displayPassalong);
-		} else if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER
-			snowballingDisplay[latestDisplayIndex] += displayPassalong
+			if (snowballingDisplay[0] === ".") {
+				snowballingDisplay[0] = "0" + "." //IF START '.'
+			}
+		} else if (!displayOperatorsArray.includes(snowballingDisplay[latestDisplayIndex])) { //IF LATEST INDEX IS NUMBER/DOT
+
+			if (snowballingDisplay[latestDisplayIndex].indexOf(".") === -1 || displayPassalong !== ".") { //PREVENTS DOUBLE FLOAT
+				snowballingDisplay[latestDisplayIndex] += displayPassalong 
+			}
+			
 		} else {
 			snowballingDisplay.push(displayPassalong);
+			latestDisplayIndex = snowballingDisplay.length - 1
+
+			if (snowballingDisplay[latestDisplayIndex] === ".") {
+				snowballingDisplay[latestDisplayIndex] = "0" + "." //IF LATEST INDEX START '.'
+			}
 		}
 	}
 
@@ -221,7 +227,7 @@ function displayClear() {
 	latestDisplayIndex = ""
 	displayAnswer = 0
 	expressionDisplay = []
-	calcDisplayBottom.textContent = ""
+	calcDisplayBottom.textContent = "0"
 	calcDisplayTop.textContent = ""
 }
 
@@ -246,10 +252,6 @@ let snowballingData = [] //Array to pass each piece of data separately
 
 let dataOperatorsArray = ["/","*","-","+","="]
 let snowballedDataResult = "" //Declare for check if true statements
-
-
-
-
 
 let calcDisplayTop = document.querySelector('.displayContainer .displayTop')
 let calcDisplayBottom = document.querySelector('.displayContainer .displayBottom')
