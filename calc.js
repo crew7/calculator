@@ -40,6 +40,11 @@ function operate(initialNumber, operator, modifierNumber) {
 
 function dataAppender(dataPassalong) {
 
+	
+	
+
+	
+
 	if (dataOperatorsArray.includes(dataPassalong) && snowballingData.length === 0) {
 		snowballingData.unshift(0); //if start with operator, then 0 then operator.
 	}
@@ -51,13 +56,13 @@ function dataAppender(dataPassalong) {
 		}
 	};
 
-	console.log(eachDataPiece)
 
 	if (dataOperatorsArray.includes(dataPassalong)) { //IF OPERATOR
 		
 		if (eachDataPiece !== "") { //IF STORED NUMBER
 
 			if (snowballingData.length === 1) { //REPLACE ANSWER (e.g. 5 > =) 
+
 				snowballingData[0] = Number(eachDataPiece);
 				eachDataPiece = ""	
 				 
@@ -88,8 +93,7 @@ function dataAppender(dataPassalong) {
 		
 	};
 
-	
-	
+	replaceFalseyValues();
 
 	if (snowballingData.length === 3 && dataOperatorsArray.includes(dataPassalong)) { //3 INDEXES AND OPERATOR
 		let initialNumber = Number(snowballingData[0]); 
@@ -107,6 +111,8 @@ function dataAppender(dataPassalong) {
 		}
 
 	}
+
+	console.log(snowballingData)
 
 
 	//NOT INT, FLOAT, OR EMPTY STRING, RESET.
@@ -134,6 +140,8 @@ function dataAppender(dataPassalong) {
 
 function displayAppender(displayPassalong) {
 
+	
+
 	calcDisplayTop.textContent = "" //RESET EXPRESSION PAGE
 
 	latestDisplayIndex = snowballingDisplay.length - 1
@@ -150,33 +158,43 @@ function displayAppender(displayPassalong) {
 		}
 		
 		if (displayPassalong === '=') { 
-
-
-			snowballingDisplay.push(displayAnswer.toString()); 
-			snowballingDisplay = snowballingDisplay.filter(n => n) //ABOVE PUSH GIVES UNDEFINED, FILTER REMOVES.
-			if (snowballingDisplay.length === 1) snowballingDisplay.pop(); //ABOVE FILTER BYPASSES ABOVE IF STATEMENTS, SO LEN 1 CHECK HERE.	
+			
+			
+			if (isNaN(displayAnswer) || !isFinite(displayAnswer)) {
+				displayAnswer = 0 //Data validation for odd inputs like . > =
+			}
 			
 
+			snowballingDisplay.push(displayAnswer.toString()); 
+			
+			snowballingDisplay = snowballingDisplay.filter(n => n) //ABOVE PUSH GIVES UNDEFINED, FILTER REMOVES. 
+			
+			if (snowballingDisplay.length === 1) snowballingDisplay.pop(); //ABOVE FILTER BYPASSES ABOVE IF STATEMENTS, SO LEN 1 CHECK HERE.	
+			
+			expressionDisplayOverwrite = [] //RESET OVERWRITE ARRAY FROM PREVIOUS REFORMAT.
 			expressionDisplay = snowballingDisplay.slice();
+			PopTrailingDecimals(expressionDisplay);
 			expressionDisplay.pop(); //REMOVE ANS FOR EXPRESSION
 
 			latestDisplayIndex = snowballingDisplay.length - 1 //REWRITE
 			snowballingDisplay = [snowballingDisplay[latestDisplayIndex]]; //REMOVE ALL BUT ANS FOR RESULT
 			
 		};
-
+		
 
 	};
 
 	if (!displayOperatorsArray.includes(displayPassalong)) { //IF PASSALONG NUMBER
 
+		if (isNaN(displayAnswer) || !isFinite(displayAnswer)) {
+			displayAnswer = 0 //Data validation for odd inputs like . > = > 5
+		}
+
 		if (displayAnswer.toString() === calcDisplayBottom.textContent) { //REPLACE ANSWER
 			snowballingDisplay = [] 
 			calcDisplayBottom.textContent = ""
 		}
-
 		
-
 		if (!snowballingDisplay[latestDisplayIndex]) { //IF EMPTY ARRAY
 			snowballingDisplay.push(displayPassalong);
 			if (snowballingDisplay[0] === ".") {
@@ -196,7 +214,10 @@ function displayAppender(displayPassalong) {
 				snowballingDisplay[latestDisplayIndex] = "0" + "." //IF LATEST INDEX START '.'
 			}
 		}
+
+		
 	}
+
 
 	overwriteDisplay = snowballingDisplay.join(" ");
 	calcDisplayBottom.textContent = overwriteDisplay;
@@ -209,9 +230,30 @@ function displayAppender(displayPassalong) {
 		calcDisplayTop.textContent = expressionDisplay;
 
 	}
-	
+}
+
+function PopTrailingDecimals(expressionDisplayArray) {
+	for (each of expressionDisplayArray) {
+		if (each.toString().endsWith(".")) {
+			let expressionReformatted = each.toString().slice(0, each.length - 1)
+			expressionDisplayOverwrite.push(expressionReformatted);
+		} else {
+			expressionDisplayOverwrite.push(each);
+		}
+		expressionDisplay = expressionDisplayOverwrite
+	}
 
 
+};
+
+function replaceFalseyValues() {
+	for (index in snowballingData) {
+		if ( !dataOperatorsArray.includes(snowballingData[index]) ) {
+			if (isNaN(snowballingData[index]) || !isFinite(snowballingData[index])) { //isFinite messes up other conditions, so nested if.
+				snowballingData[index] = 0
+			}
+		}
+	}
 }
 
 function dataClear() {
@@ -243,6 +285,7 @@ let snowballingDisplay = []
 let latestDisplayIndex = ""
 let displayAnswer = 0
 let expressionDisplay = []
+let expressionDisplayOverwrite = []
 let displayOperatorsArray = ["÷","×","-","+","="]
 
 //----Data variables
