@@ -112,8 +112,6 @@ function dataAppender(dataPassalong) {
 
 	}
 
-	console.log(snowballingData)
-
 
 	//NOT INT, FLOAT, OR EMPTY STRING, RESET.
 	if ( !isFinite(snowballedDataResult) || isNaN(snowballedDataResult) ) { //num > / > 0 gives infinity, / > = gives NaN
@@ -296,9 +294,42 @@ let snowballingData = [] //Array to pass each piece of data separately
 let dataOperatorsArray = ["/","*","-","+","="]
 let snowballedDataResult = "" //Declare for check if true statements
 
+//----Queries 
+let keyboardValue;
+let calcDataValue;
+let calcDisplayValue;
+
 let calcDisplayTop = document.querySelector('.displayContainer .displayTop')
 let calcDisplayBottom = document.querySelector('.displayContainer .displayBottom')
 let allButtons = document.querySelectorAll('button');
+
+
+
+window.addEventListener("keydown", function(keyClick) {
+	keyboardValue = keyClick.key
+	
+	allButtons.forEach( (calcElements) => {
+
+		calcDataValue = calcElements.getAttribute(calcElements.attributes[0].name) //Fetches data att regardless of name
+		calcDisplayValue = calcElements.textContent
+
+		if (keyboardValue === calcDataValue) {
+			dataAppender(calcDataValue);
+			displayAppender(calcDisplayValue);
+
+		}
+		
+	} )
+
+	if (keyboardValue === "Enter") {
+		dataAppender("=");
+		displayAppender("=");
+
+	} else if (keyboardValue === "Backspace") {
+		dataClear();
+		displayClear();
+	}
+})
 
 
 allButtons.forEach( (individualButton) => {
